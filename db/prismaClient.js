@@ -40,8 +40,6 @@ async function findUser(username) {
             select: { id: true, username: true, password: true }
         });
 
-        console.log("Fetched user:", user);
-
         if (!user) {
             return null;
         }
@@ -55,18 +53,26 @@ async function findUser(username) {
 
 async function findUserById(id) {
     try {
+        console.log('Hello! bye!')
         const user = await prisma.user.findUnique({
             where: {
-                id: id,  
+                id: id,
             },
         });
 
-        return user;
+        if (!user) {
+            console.error('User not found with id:', id);
+            throw new Error('User not found');
+        }
+
+        return user;  
+
     } catch (error) {
         console.error('Error finding user by ID:', error);
-        throw new Error('User not found');
+        throw new Error('Failed to fetch user from the database');
     }
 }
+
 
 module.exports = {
     signUpUser,

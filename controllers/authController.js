@@ -42,45 +42,28 @@ async function signUpUser(req, res) {
     }
 }
 
-async function logUserIn (req, res) {
-
+async function logUserIn(req, res) {
     const { username, password } = req.body;
 
-    console.log(password)
-
-    try{
-
+    try {
         const user = await db.findUser(username);
-
-        if(!user) {
-
+        if (!user) {
             return res.status(400).json({ message: 'Invalid username or password' });
         }
 
-        if (!user.password) {
-            console.log("Password from database:", user.password);
-            console.log("Type of password:", typeof user.password);
-            return res.status(500).json({ message: 'Password not found in database' });
-        }
-        
-        const checkPasswordValid = await bcrypt.compare(password, user.password);
-
-        if(!checkPasswordValid) {
-            console.log("Password comparison result:", checkPasswordValid);
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
             return res.status(400).json({ message: 'Invalid username or password' });
-
         }
 
         const payload = { userId: user.id };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ success: true, token: `Bearer ${token}` });
-
+        console.log('Backend done!')
     } catch (error) {
-
         console.error(error);
         res.status(500).json({ message: 'Server error' });
-
     }
 }
 
