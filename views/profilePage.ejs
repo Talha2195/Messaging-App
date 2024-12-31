@@ -9,9 +9,17 @@
 <body>
     <div class="profile-container">
         <div class="profile-box">
-            <img src="https://via.placeholder.com/80" alt="Profile Picture" class="profile-image">
 
-            <div class="username">John Doe</div>
+            <div class="menu-button" id="menuButton">...</div>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+                <ul>
+                    <li><a href="#" id="logout">Logout</a></li>
+                </ul>
+            </div>
+
+            <img src="https://via.placeholder.com/80" alt="Profile Picture" class="profile-image">
+            <div class="username"><%= user.username %></div>
 
             <ul class="contacts-list">
                 <li>
@@ -33,6 +41,7 @@
             </ul>
         </div>
     </div>
-    <script src="/js/tokenAuth.js"></script>
+    <script src="/js/dropDownMenu.js"></script>
 </body>
 </html>
+

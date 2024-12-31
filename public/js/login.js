@@ -4,7 +4,6 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // Send login request to server
     fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
@@ -19,10 +18,9 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     .then((response) => response.json())
     .then((data) => {
         if (data.success) {
-            console.log(data.token); 
+            console.log(data.token);
 
-            localStorage.setItem('token', data.token);  
-            window.location.href = '/profile';
+            window.location.href = `/profile?token=${encodeURIComponent(data.token)}`;
         } else {
             alert(data.message || 'Something went wrong');
         }

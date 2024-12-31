@@ -37,6 +37,7 @@ body {
     overflow: hidden;
 }
 
+
 .profile-box .profile-image {
     width: 80px;
     height: 80px;
@@ -45,12 +46,14 @@ body {
     margin-bottom: 15px;
 }
 
+
 .profile-box .username {
     font-size: 18px;
     font-weight: bold;
     color: #333;
     margin-bottom: 15px;
 }
+
 
 .contacts-list {
     width: 100%;
@@ -80,6 +83,69 @@ body {
     color: #999;
 }
 
+.menu-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 28px; 
+    color: #888; 
+    background-color: transparent; 
+    border: none; 
+    border-radius: 50%;
+    width: 40px; 
+    height: 40px; 
+    line-height: 40px; 
+    text-align: center; 
+    transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+    color: #000;
+    transform: scale(1.1);
+}
+
+.dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 150px;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu ul li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-menu ul li:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu ul li:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-menu ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
 @media (max-width: 600px) {
     .profile-box {
         padding: 20px;
@@ -91,5 +157,11 @@ body {
 
     .contacts-list li {
         padding: 8px;
+    }
+
+    .menu-button {
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
     }
 }

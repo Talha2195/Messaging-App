@@ -5,12 +5,5 @@ const { authMiddleware } = require('../passportConfig')
 
 getRouter.get('/', getControllers.renderMainPage);
 getRouter.get('/signUp', getControllers.renderSignUpPage);
-getRouter.get('/profile', authMiddleware, (req, res) => {
-    res.json({
-        success: true,
-        message: 'Welcome to the profile page!',
-        user: req.user,
-    });
-});
-
+getRouter.get('/profile', authMiddleware, getControllers.renderProfilePage);
 module.exports = getRouter;
