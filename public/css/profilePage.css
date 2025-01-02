@@ -12,12 +12,98 @@ body {
     position: relative;
 }
 
+.add-user-button {
+    font-size: 30px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    transition: background-color 0.3s ease;
+    z-index: 10; 
+}
+
+.add-user-button:hover {
+    background-color: #45a049;
+}
+
+.search-container {
+    position: fixed;
+    top: 15px;
+    right: -600px; 
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 9;
+    width: 500px;
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+.search-container.expanded {
+    transform: translateX(-133%); 
+}
+
+.add-user-button {
+    font-size: 30px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10; 
+}
+
+.add-user-button:hover {
+    background-color: #0056b3;
+}
+
+.search-container input {
+    width: 100%;  
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px; 
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
 .profile-container {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;  
-    width: 350px;  
+    height: 100%;
+    width: 350px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -37,6 +123,52 @@ body {
     overflow: hidden;
 }
 
+.menu-button {
+    font-size: 30px;
+    cursor: pointer;
+    color: grey;
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.menu-button:hover {
+    color: black;
+}
+
+.dropdown-menu {
+    display: none;  
+    position: absolute;
+    top: 50px; 
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    padding: 10px;
+}
+
+.dropdown-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    padding: 10px;
+}
+
+.dropdown-menu li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f1f1f1;
+}
 
 .profile-box .profile-image {
     width: 80px;
@@ -46,14 +178,12 @@ body {
     margin-bottom: 15px;
 }
 
-
 .profile-box .username {
     font-size: 18px;
     font-weight: bold;
     color: #333;
     margin-bottom: 15px;
 }
-
 
 .contacts-list {
     width: 100%;
@@ -83,67 +213,8 @@ body {
     color: #999;
 }
 
-.menu-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 28px; 
-    color: #888; 
-    background-color: transparent; 
-    border: none; 
-    border-radius: 50%;
-    width: 40px; 
-    height: 40px; 
-    line-height: 40px; 
-    text-align: center; 
-    transition: all 0.3s ease;
-}
-
-.menu-button:hover {
-    color: #000;
-    transform: scale(1.1);
-}
-
-.dropdown-menu {
-    display: none; 
-    position: absolute;
-    top: 40px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 150px;
-}
-
-.dropdown-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.dropdown-menu ul li {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-}
-
-.dropdown-menu ul li:last-child {
-    border-bottom: none;
-}
-
-.dropdown-menu ul li:hover {
-    background-color: #f0f0f0;
-}
-
-.dropdown-menu ul li a {
-    text-decoration: none;
-    color: #333;
-}
-
-.dropdown-menu.show {
-    display: block;
+.profile-box {
+    position: relative;
 }
 
 @media (max-width: 600px) {
@@ -157,11 +228,5 @@ body {
 
     .contacts-list li {
         padding: 8px;
-    }
-
-    .menu-button {
-        top: 8px;
-        right: 8px;
-        font-size: 20px;
     }
 }

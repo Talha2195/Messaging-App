@@ -6,6 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 passport.use(
   new JwtStrategy(
     {
+      
       jwtFromRequest: (req) => {
         const token = ExtractJwt.fromUrlQueryParameter('token')(req);
         if (token && token.startsWith('Bearer ')) {
