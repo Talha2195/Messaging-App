@@ -15,25 +15,18 @@ document
       ? tokenFromUrl
       : `Bearer ${tokenFromUrl}`
 
-    console.log("Token to send in request:", token)
-
     const friendUsername = document.getElementById("searchInput").value
     if (!friendUsername) {
       console.error("Friend username is required")
       return
     }
 
-    console.log("Friend username to send:", friendUsername)
+    const requestPayload = { friendReq: friendUsername }
 
-    const requestPayload = {
-      friendReq: friendUsername,
-    }
-
-    fetch("http://localhost:5000/sendReq", {
+    fetch(`http://localhost:5000/sendReq?token=${encodeURIComponent(token)}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
       },
       body: JSON.stringify(requestPayload),
     })

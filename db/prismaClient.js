@@ -87,6 +87,7 @@ async function sendFriendRequest(senderId, receiverId) {
       data: {
         senderId: senderId,
         receiverId: receiverId,
+        status: "PENDING",
       },
     })
 
