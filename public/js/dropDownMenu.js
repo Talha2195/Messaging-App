@@ -1,6 +1,16 @@
 document.getElementById('menuButton').addEventListener('click', () => {
     const dropdownMenu = document.getElementById('dropdownMenu');
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    
+    const isVisible = dropdownMenu.style.display === 'block';
+    dropdownMenu.style.display = isVisible ? 'none' : 'block';
+
+    if (!isVisible) {
+
+        const menuButtonRect = document.getElementById('menuButton').getBoundingClientRect();
+        
+        dropdownMenu.style.top = `${menuButtonRect.bottom + window.scrollY + 5}px`; 
+        dropdownMenu.style.left = `${menuButtonRect.left + window.scrollX}px`;  
+    }
 });
 
 document.addEventListener('click', (event) => {

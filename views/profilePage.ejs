@@ -9,19 +9,13 @@
   <body>
     <div class="profile-container">
       <div class="profile-box">
-        <div class="menu-button" id="menuButton">...</div>
-
-        <div class="dropdown-menu" id="dropdownMenu">
-          <ul>
-            <li><a href="#" id="logout">Logout</a></li>
-          </ul>
+        <div class="menu-button" id="menuButton">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
         </div>
 
-        <img
-          src="https://via.placeholder.com/80"
-          alt="Profile Picture"
-          class="profile-image"
-        />
+        <img src="https://via.placeholder.com/80" alt="Profile Picture" class="profile-image" />
         <div class="username"><%= user.username %></div>
 
         <ul class="contacts-list">
@@ -47,19 +41,30 @@
 
     <div class="add-user-button" id="addUserButton">+</div>
 
+    <div class="friend-requests-button" id="friendRequestsButton">
+      <img src="/images/addPerson.svg" alt="Add Friend"/>
+    </div>
+
     <form class="search-container" id="searchContainer">
-      <input
-        type="text"
-        id="searchInput"
-        name="friendReq"
-        placeholder="Enter username"
-        required
-      />
+      <input type="text" id="searchInput" name="friendReq" placeholder="Enter username" required />
       <button type="submit" id="addButton">Add</button>
     </form>
 
+    <div class="dropdown-menu friend-requests-dropdown" id="friendRequestsDropdown">
+      <ul>
+        <li>No friend requests</li>
+      </ul>
+    </div>
+
+    <div class="dropdown-menu logout-dropdown" id="dropdownMenu">
+      <ul>
+        <li><a href="#" id="logout">Logout</a></li>
+      </ul>
+    </div>
+
     <script src="/js/logUserOut.js"></script>
     <script src="/js/dropDownMenu.js"></script>
+    <script src="/js/friendRequestMenu.js"></script>
     <script src="/js/searchBar.js"></script>
     <script src="/js/sendFriendRequest.js"></script>
   </body>
