@@ -116,9 +116,47 @@ async function getFriendRequests(req, res) {
   }
 }
 
+async function acceptFriendRequest(req, res) {
+  const { requestId } = req.body
+
+  try {
+    await db.acceptFriendRequest(requestId)
+    return res.status(200).json({
+      success: true,
+      message: "Friend request accepted successfully",
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: `Error accepting friend request: ${error.message}`,
+    })
+  }
+}
+
+async function rejectFriendRequest(req, res) {
+  const { requestId } = req.body
+
+  try {
+    await db.rejectFriendRequest(requestId)
+    return res.status(200).json({
+      success: true,
+      message: "Friend request rejected successfully",
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: `Error rejecting friend request: ${error.message}`,
+    })
+  }
+}
+
 module.exports = {
   signUpUser,
   logUserIn,
   sendFriendRequest,
   getFriendRequests,
+  acceptFriendRequest,
+  rejectFriendRequest,
 }

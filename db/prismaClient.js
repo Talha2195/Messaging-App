@@ -100,15 +100,53 @@ async function sendFriendRequest(senderId, receiverId) {
 
 async function getFriendRequests(userId) {
   try {
-    const requests = await prisma.friendRequest.findMany({
+    const friendRequests = await prisma.friendRequest.findMany({
       where: {
         receiverId: userId,
+        status: "PENDING",
+      },
+      include: {
+        sender: true,
       },
     })
-
-    return requests
+    return friendRequests.map((request) => ({
+      id: request.id,
+      username: request.sender.username,
+    }))
   } catch (error) {
     console.error("Error fetching friend requests:", error)
+    throw error
+  }
+}
+
+async function acceptFriendRequest(requestId) {
+  try {
+    await prisma.friendRequest.update({
+      where: {
+        id: requestId,
+      },
+      data: {
+        status: "ACCEPTED",
+      },
+    })
+  } catch (error) {
+    console.error("Error accepting friend request:", error)
+    throw error
+  }
+}
+
+async function rejectFriendRequest(requestId) {
+  try {
+    await prisma.friendRequest.delete({
+      where: {
+        id: requestId,
+      },
+      data: {
+        status: "REJECTED",
+      },
+    })
+  } catch (error) {
+    console.error("Error rejecting friend request:", error)
     throw error
   }
 }
@@ -119,4 +157,6 @@ module.exports = {
   findUserById,
   sendFriendRequest,
   getFriendRequests,
+  acceptFriendRequest,
+  rejectFriendRequest,
 }

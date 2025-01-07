@@ -14,11 +14,7 @@ body {
 
 .add-user-button {
   font-size: 30px;
-<<<<<<< HEAD
-  background-color: #4caf50;
-=======
   background-color: #007bff;
->>>>>>> CSSChanges
   color: white;
   border-radius: 50%;
   width: 40px;
@@ -35,9 +31,6 @@ body {
 }
 
 .add-user-button:hover {
-<<<<<<< HEAD
-  background-color: #45a049;
-=======
   background-color: #0056b3;
 }
 
@@ -45,16 +38,16 @@ body {
   font-size: 16px;
   cursor: pointer;
   position: absolute;
-  top: 70px; 
-  right: 15px; 
+  top: 70px;
+  right: 15px;
   width: 40px;
   height: 40px;
-  background-color: #007bff; 
-  border-radius: 50%;  
+  background-color: #007bff;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s ease, transform 0.3s ease;  
+  transition: background-color 0.3s ease, transform 0.3s ease;
   z-index: 10;
 }
 
@@ -62,13 +55,11 @@ body {
   width: 25px;
   height: 25px;
   object-fit: contain;
-  fill: white; 
+  fill: white;
 }
 
 .friend-requests-button:hover {
-  background-color: #0056b3;  
-  transform: scale(1.1);  
->>>>>>> CSSChanges
+  background-color: #0056b3;
 }
 
 .search-container {
@@ -93,30 +84,6 @@ body {
   transform: translateX(-133%);
 }
 
-<<<<<<< HEAD
-.add-user-button {
-  font-size: 30px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 10;
-}
-
-.add-user-button:hover {
-  background-color: #0056b3;
-}
-
-=======
->>>>>>> CSSChanges
 .search-container input {
   width: 100%;
   padding: 8px 12px;
@@ -139,11 +106,7 @@ body {
 }
 
 .profile-container {
-<<<<<<< HEAD
-  position: absolute;
-=======
   position: relative;
->>>>>>> CSSChanges
   top: 0;
   left: 0;
   height: 100%;
@@ -167,45 +130,18 @@ body {
   overflow: hidden;
 }
 
-<<<<<<< HEAD
-.menu-button {
-  font-size: 30px;
-  cursor: pointer;
-  color: grey;
-  transition: color 0.3s ease;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-}
-
-.menu-button:hover {
-  color: black;
-}
-
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 50px;
-  right: 0;
-=======
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 30px; 
-  left: 500;    
->>>>>>> CSSChanges
+  top: 30px;
+  left: 500;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-<<<<<<< HEAD
-  z-index: 100;
-  padding: 10px;
-=======
   padding: 10px;
   width: 200px;
-  z-index: 1000; 
->>>>>>> CSSChanges
+  z-index: 1000;
 }
 
 .dropdown-menu ul {
@@ -224,52 +160,87 @@ body {
   display: block;
 }
 
-<<<<<<< HEAD
-=======
 .menu-button.active + .dropdown-menu {
   display: block;
 }
 
->>>>>>> CSSChanges
 .dropdown-menu li a:hover {
   background-color: #f1f1f1;
 }
 
-<<<<<<< HEAD
-=======
 .friend-requests-dropdown {
-  top: 110px; 
+  display: none;
+  position: absolute;
+  top: 120px;
   right: 15px;
-  width: 220px; 
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 250px;
+  z-index: 1001;
+}
+
+.friend-requests-dropdown ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .friend-requests-dropdown ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #000;
+}
+
+.friend-requests-dropdown ul li:last-child {
+  border-bottom: none;
+}
+
+.friend-requests-dropdown ul li span {
+  flex-grow: 1;
   color: #007bff;
-  font-weight: bold; 
+  font-weight: bold;
+}
+
+.friend-requests-dropdown ul li button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #000;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.friend-requests-dropdown ul li button:hover {
+  background-color: #0056b3;
 }
 
 .logout-dropdown {
   display: none;
-  position: absolute; 
+  position: absolute;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
   width: 200px;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .logout-dropdown ul li {
   color: #ff0000;
-  font-weight: normal; 
+  font-weight: normal;
 }
 
 .menu-button.active + .logout-dropdown {
-  display: block; 
+  display: block;
 }
 
->>>>>>> CSSChanges
 .profile-box .profile-image {
   width: 80px;
   height: 80px;
@@ -313,27 +284,27 @@ body {
   color: #999;
 }
 
-<<<<<<< HEAD
-.profile-box {
-  position: relative;
-=======
 .menu-button {
   position: absolute;
   top: 15px;
-  right: 15px; 
+  right: 15px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  z-index: 999; 
+  z-index: 999;
 }
 
 .menu-button .dot {
-  width: 25px;
+  width: 5px;
   height: 5px;
-  background-color: #333;
-  border-radius: 2px;
->>>>>>> CSSChanges
+  border-radius: 4px;
+  background-color: grey;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover .dot {
+  background-color: black;
 }
 
 @media (max-width: 600px) {
@@ -341,15 +312,6 @@ body {
     padding: 20px;
   }
 
-<<<<<<< HEAD
-  .profile-box .username {
-    font-size: 16px;
-  }
-
-  .contacts-list li {
-    padding: 8px;
-  }
-=======
   .contacts-list li {
     padding: 8px;
   }
@@ -359,5 +321,4 @@ body {
     width: 35px;
     height: 35px;
   }
->>>>>>> CSSChanges
 }

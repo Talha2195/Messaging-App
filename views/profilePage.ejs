@@ -15,7 +15,11 @@
           <div class="dot"></div>
         </div>
 
-        <img src="https://via.placeholder.com/80" alt="Profile Picture" class="profile-image" />
+        <img
+          src="https://via.placeholder.com/80"
+          alt="Profile Picture"
+          class="profile-image"
+        />
         <div class="username"><%= user.username %></div>
 
         <ul class="contacts-list">
@@ -42,19 +46,38 @@
     <div class="add-user-button" id="addUserButton">+</div>
 
     <div class="friend-requests-button" id="friendRequestsButton">
-      <img src="/images/addPerson.svg" alt="Add Friend"/>
+      <img src="/images/addPerson.svg" alt="Add Friend" />
+    </div>
+
+    <div class="dropdown-menu friend-requests-dropdown" id="friendRequestsMenu">
+      <ul>
+        <% if (friendRequests && friendRequests.length > 0) { %> <%
+        friendRequests.forEach(function(request) { %>
+        <li>
+          <span><%= request.username %></span>
+          <button class="accept-button" data-id="<%= request.id %>">
+            Accept
+          </button>
+          <button class="decline-button" data-id="<%= request.id %>">
+            Decline
+          </button>
+        </li>
+        <% }) %> <% } else { %>
+        <li>No friend requests</li>
+        <% } %>
+      </ul>
     </div>
 
     <form class="search-container" id="searchContainer">
-      <input type="text" id="searchInput" name="friendReq" placeholder="Enter username" required />
+      <input
+        type="text"
+        id="searchInput"
+        name="friendReq"
+        placeholder="Enter username"
+        required
+      />
       <button type="submit" id="addButton">Add</button>
     </form>
-
-    <div class="dropdown-menu friend-requests-dropdown" id="friendRequestsDropdown">
-      <ul>
-        <li>No friend requests</li>
-      </ul>
-    </div>
 
     <div class="dropdown-menu logout-dropdown" id="dropdownMenu">
       <ul>

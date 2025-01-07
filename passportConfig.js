@@ -8,10 +8,8 @@ passport.use(
     {
       jwtFromRequest: (req) => {
         const token = ExtractJwt.fromUrlQueryParameter("token")(req)
-        console.log("Extracted token:", token)
         if (token && token.startsWith("Bearer ")) {
           const slicedToken = token.slice(7)
-          console.log("Sliced token:", slicedToken)
           return slicedToken
         }
         return token
@@ -20,7 +18,6 @@ passport.use(
     },
     async (payload, done) => {
       try {
-        console.log("Payload:", payload)
         const user = await db.findUserById(payload.userId)
         if (!user) {
           return done(null, false)
