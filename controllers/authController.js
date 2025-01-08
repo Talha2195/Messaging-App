@@ -117,10 +117,10 @@ async function getFriendRequests(req, res) {
 }
 
 async function acceptFriendRequest(req, res) {
-  const { requestId } = req.body
+  const { id } = req.body
 
   try {
-    await db.acceptFriendRequest(requestId)
+    await db.acceptFriendRequest(id)
     return res.status(200).json({
       success: true,
       message: "Friend request accepted successfully",
@@ -135,10 +135,10 @@ async function acceptFriendRequest(req, res) {
 }
 
 async function rejectFriendRequest(req, res) {
-  const { requestId } = req.body
+  const { id } = req.body
 
   try {
-    await db.rejectFriendRequest(requestId)
+    await db.rejectFriendRequest(id)
     return res.status(200).json({
       success: true,
       message: "Friend request rejected successfully",

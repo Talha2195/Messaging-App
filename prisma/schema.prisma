@@ -17,6 +17,8 @@ model User {
   messages          Messages[]      
   sentRequests      FriendRequest[]    @relation("SentRequests") 
   receivedRequests  FriendRequest[]    @relation("ReceivedRequests") 
+  friends           Friendship[]       @relation("UserFriends")
+  friendOf          Friendship[]       @relation("FriendOf")
 }
 
 model Messages {
@@ -36,6 +38,16 @@ model FriendRequest {
   
   sender      User     @relation("SentRequests", fields: [senderId], references: [id])
   receiver    User     @relation("ReceivedRequests", fields: [receiverId], references: [id])
+}
+
+model Friendship {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  friendId    Int
+  createdAt   DateTime @default(now())
+
+  user        User     @relation("UserFriends", fields: [userId], references: [id])
+  friend      User     @relation("FriendOf", fields: [friendId], references: [id])
 }
 
 enum RequestStatus {

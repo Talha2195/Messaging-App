@@ -9,9 +9,10 @@ async function renderSignUpPage(req, res) {
 }
 
 async function renderProfilePage(req, res) {
-  const friendRequests = await db.getFriendRequests(req.user.id)
+  const { user, friends, friendRequests } = await db.getProfile(req.user.id)
   res.render("profilePage", {
-    user: req.user,
+    user: user,
+    friends: friends,
     friendRequests: friendRequests,
   })
 }

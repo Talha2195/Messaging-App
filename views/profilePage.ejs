@@ -21,24 +21,15 @@
           class="profile-image"
         />
         <div class="username"><%= user.username %></div>
-
         <ul class="contacts-list">
+          <% if (friends && friends.length > 0) { %> 
+          <% friends.forEach(function(friend) { %>
           <li>
-            <div class="contact-name">Jane Smith</div>
-            <div class="contact-status">Online</div>
-          </li>
-          <li>
-            <div class="contact-name">Bob Johnson</div>
-            <div class="contact-status">Offline</div>
-          </li>
-          <li>
-            <div class="contact-name">Alice Brown</div>
-            <div class="contact-status">Online</div>
-          </li>
-          <li>
-            <div class="contact-name">Charlie Davis</div>
-            <div class="contact-status">Away</div>
-          </li>
+            <div class="contact-name"><%= friend.username %></div>
+            </div>
+            <% }) %>
+          <% } else { %>
+          <% } %>
         </ul>
       </div>
     </div>
@@ -90,5 +81,6 @@
     <script src="/js/friendRequestMenu.js"></script>
     <script src="/js/searchBar.js"></script>
     <script src="/js/sendFriendRequest.js"></script>
+    <script src="/js/requestStatus.js"></script>
   </body>
 </html>

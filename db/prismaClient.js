@@ -98,40 +98,82 @@ async function sendFriendRequest(senderId, receiverId) {
   }
 }
 
-async function getFriendRequests(userId) {
+async function getProfile(userId) {
   try {
-    const friendRequests = await prisma.friendRequest.findMany({
-      where: {
-        receiverId: userId,
-        status: "PENDING",
-      },
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
       include: {
-        sender: true,
+        friends: {
+          include: {
+            friend: true,
+          },
+        },
+        sentRequests: {
+          where: {
+            status: "PENDING",
+          },
+          include: {
+            receiver: true,
+          },
+        },
+        receivedRequests: {
+          where: {
+            status: "PENDING",
+          },
+          include: {
+            sender: true,
+          },
+        },
       },
     })
-    return friendRequests.map((request) => ({
+
+    const friends = user.friends.map((friendship) => friendship.friend)
+    const friendRequests = user.receivedRequests.map((request) => ({
       id: request.id,
       username: request.sender.username,
     }))
+
+    return { user, friends, friendRequests }
   } catch (error) {
-    console.error("Error fetching friend requests:", error)
+    console.error("Error fetching profile:", error)
     throw error
   }
 }
 
 async function acceptFriendRequest(requestId) {
   try {
-    await prisma.friendRequest.update({
+    const friendRequest = await prisma.friendRequest.update({
       where: {
         id: requestId,
       },
       data: {
         status: "ACCEPTED",
       },
+      include: {
+        sender: true,
+        receiver: true,
+      },
     })
+
+    await prisma.friendship.create({
+      data: {
+        userId: friendRequest.senderId,
+        friendId: friendRequest.receiverId,
+      },
+    })
+
+    await prisma.friendship.create({
+      data: {
+        userId: friendRequest.receiverId,
+        friendId: friendRequest.senderId,
+      },
+    })
+
+    console.log(
+      `Friendship created between ${friendRequest.senderId} and ${friendRequest.receiverId}`
+    )
   } catch (error) {
     console.error("Error accepting friend request:", error)
-    throw error
   }
 }
 
@@ -141,13 +183,9 @@ async function rejectFriendRequest(requestId) {
       where: {
         id: requestId,
       },
-      data: {
-        status: "REJECTED",
-      },
     })
   } catch (error) {
     console.error("Error rejecting friend request:", error)
-    throw error
   }
 }
 
@@ -156,7 +194,7 @@ module.exports = {
   findUser,
   findUserById,
   sendFriendRequest,
-  getFriendRequests,
+  getProfile,
   acceptFriendRequest,
   rejectFriendRequest,
 }
