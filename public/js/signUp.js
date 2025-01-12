@@ -1,40 +1,34 @@
-document.getElementById('signUpForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+async function handleSignUpFormSubmit(username, password, confirmPassword) {
+  if (password !== confirmPassword) {
+    return { success: false, message: "Passwords do not match!" }
+  }
 
-    const username = document.getElementById('username').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const password = document.getElementById('password').value;
+  try {
+    const response = await fetch("http://localhost:5000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        confirmPassword: confirmPassword,
+      }),
+      credentials: "include",
+    })
 
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
+    const contentType = response.headers.get("content-type")
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      const data = await response.json()
+      return data
+    } else {
+      const text = await response.text()
+      return { success: false, message: text }
     }
+  } catch (error) {
+    console.error("Error:", error)
+    return { success: false, message: "An error occurred. Please try again." }
+  }
+}
 
-    fetch('http://localhost:5000/register', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password,  
-            confirmPassword: confirmPassword,
-        }),
-        credentials: 'include', 
-    })
-    .then(response => response.json())
-    .then(data => {
-
-        if (data.success) {
-            window.location.href = '/';
-        }else {
-
-            alert(data.message || 'Something went wrong');
-        }
-
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
+export { handleSignUpFormSubmit }
