@@ -1,7 +1,7 @@
 const { Router } = require("express")
 const getRouter = Router()
-const getControllers = require("../controllers/pageRender")
-const authController = require("../controllers/authController")
+const getControllers = require("../../controllers/pageRender")
+const authController = require("../../controllers/authController")
 const { authMiddleware } = require("../passportConfig")
 
 getRouter.get("/", getControllers.renderMainPage)

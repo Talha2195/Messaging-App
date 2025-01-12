@@ -1,7 +1,7 @@
 document
   .getElementById("searchContainer")
   .addEventListener("submit", function (e) {
-    e.preventDefault()
+    e.preventDefault() // Prevent form submission
 
     const tokenFromUrl = new URLSearchParams(window.location.search).get(
       "token"

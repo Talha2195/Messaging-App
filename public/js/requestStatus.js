@@ -9,53 +9,36 @@ document.addEventListener("DOMContentLoaded", function () {
     ? tokenFromUrl
     : `Bearer ${tokenFromUrl}`
 
-  const friendRequestsMenu = document.getElementById("friendRequestsMenu")
+  const friendRequestsDetails = document.getElementById("friendRequestsDetails")
+  const friendRequestsButton = document.getElementById("friendRequestsButton")
 
-  document.querySelectorAll(".accept-button").forEach((button) => {
-    button.addEventListener("click", function () {
-      const id = parseInt(this.getAttribute("data-id"), 10)
-      if (isNaN(id)) {
-        console.error("Invalid request ID")
-        return
-      }
-      fetch(`/acceptReq?token=${encodeURIComponent(token)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message)
-          this.closest("li").remove()
-          friendRequestsMenu.style.display = "none"
-        })
-        .catch((error) => console.error("Error:", error))
-    })
+  friendRequestsButton.addEventListener("click", function () {
+    friendRequestsDetails.style.display =
+      friendRequestsDetails.style.display === "none" ||
+      friendRequestsDetails.style.display === ""
+        ? "block"
+        : "none"
   })
 
-  document.querySelectorAll(".decline-button").forEach((button) => {
-    button.addEventListener("click", function () {
-      const id = parseInt(this.getAttribute("data-id"), 10)
-      if (isNaN(id)) {
-        console.error("Invalid request ID")
-        return
-      }
-      fetch(`/rejectReq?token=${encodeURIComponent(token)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message)
-          this.closest("li").remove()
-          friendRequestsMenu.style.display = "none"
+  fetch(`/getFriendRequests?token=${encodeURIComponent(token)}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const list = document.getElementById("friendRequestsList")
+      if (data.requests && data.requests.length > 0) {
+        data.requests.forEach((request) => {
+          const li = document.createElement("li")
+          li.innerHTML = `
+            <div>${request.username}</div>
+            <div>
+              <button class="accept-button" data-id="${request.id}">Accept</button>
+              <button class="decline-button" data-id="${request.id}">Decline</button>
+            </div>
+          `
+          list.appendChild(li)
         })
-        .catch((error) => console.error("Error:", error))
+      } else {
+        friendRequestsDetails.innerHTML = "<p>No friend requests</p>"
+      }
     })
-  })
+    .catch((error) => console.error("Error fetching friend requests:", error))
 })

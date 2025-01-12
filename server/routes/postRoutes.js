@@ -1,7 +1,7 @@
 const { Router } = require("express")
 const postRouter = Router()
-const postControllers = require("../controllers/authController")
-const { signUpVal } = require("../validators/signUpVal")
+const postControllers = require("../../controllers/authController")
+const { signUpVal } = require("../../validators/signUpVal")
 const { authMiddleware } = require("../passportConfig")
 
 postRouter.post("/register", signUpVal, postControllers.signUpUser)
