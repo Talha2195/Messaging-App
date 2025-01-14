@@ -14,6 +14,7 @@ export default function Login() {
     if (result.success) {
       setSuccess("Login successful! Redirecting...")
       setError(null)
+      localStorage.setItem("token", result.token)
       localStorage.setItem("user", JSON.stringify(result.username))
       window.location.href = `/profilePage?token=${encodeURIComponent(
         result.token
@@ -53,7 +54,7 @@ export default function Login() {
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
       <p className="signup-link">
-        Not a member yet? <a href="/signup">Sign Up</a>
+        Not a member yet? <a href="/signUpPage">Sign Up</a>
       </p>
     </div>
   )

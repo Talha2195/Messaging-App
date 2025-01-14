@@ -67,11 +67,12 @@ async function logUserIn(req, res) {
 async function sendFriendRequest(req, res) {
   console.log("sendFriendRequest called")
 
-  const { friendReq } = req.body
+  const { username } = req.body
   const senderId = req.user.id
 
   try {
-    const receiver = await db.findUser(friendReq)
+    console.log(username)
+    const receiver = await db.findUser(username)
 
     if (!receiver) {
       return res

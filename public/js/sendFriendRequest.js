@@ -1,44 +1,24 @@
-document
-  .getElementById("searchContainer")
-  .addEventListener("submit", function (e) {
-    e.preventDefault() // Prevent form submission
-
-    const tokenFromUrl = new URLSearchParams(window.location.search).get(
-      "token"
+export async function sendFriendRequest(token, username) {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/sendReq?token=${encodeURIComponent(token)}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+        credentials: "include",
+      }
     )
-    if (!tokenFromUrl) {
-      console.error("Token missing from URL")
-      return
+    const data = await response.json()
+    if (response.ok && data.success) {
+      return { success: true }
+    } else {
+      return { success: false, message: data.message || "Something went wrong" }
     }
-
-    const token = tokenFromUrl.startsWith("Bearer ")
-      ? tokenFromUrl
-      : `Bearer ${tokenFromUrl}`
-
-    const friendUsername = document.getElementById("searchInput").value
-    if (!friendUsername) {
-      console.error("Friend username is required")
-      return
-    }
-
-    const requestPayload = { friendReq: friendUsername }
-
-    fetch(`http://localhost:5000/sendReq?token=${encodeURIComponent(token)}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestPayload),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          console.log("Friend request sent:", data.request)
-        } else {
-          console.error("Error sending request:", data.message)
-        }
-      })
-      .catch((error) => {
-        console.error("Request failed:", error)
-      })
-  })
+  } catch (error) {
+    console.error("Error:", error)
+    return { success: false, message: "An error occurred. Please try again." }
+  }
+}
