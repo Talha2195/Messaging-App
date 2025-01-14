@@ -6,7 +6,7 @@ export default function Signup() {
   const [username, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("null")
+  const [error, setError] = useState("")
   const [success, setSuccess] = useState(null)
 
   const handleSubmit = async (event) => {
@@ -67,7 +67,7 @@ export default function Signup() {
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
       <p className="login-link">
-        Already a member? <a href="/login">Login</a>
+        Already a member? <a href="/loginPage">Login</a>
       </p>
     </div>
   )

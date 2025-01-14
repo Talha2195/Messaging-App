@@ -1,6 +1,6 @@
 const passport = require("passport")
 const { ExtractJwt, Strategy: JwtStrategy } = require("passport-jwt")
-const db = require("./db/prismaClient")
+const db = require("../db/prismaClient")
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
 
 passport.use(

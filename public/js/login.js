@@ -1,32 +1,22 @@
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault()
-
-  const username = document.getElementById("username").value
-  const password = document.getElementById("password").value
-
-  fetch("http://localhost:5000/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-    }),
-    credentials: "include",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        console.log(data.token)
-        window.location.href = `/profile?token=${encodeURIComponent(
-          data.token
-        )}`
-      } else {
-        alert(data.message || "Something went wrong")
-      }
+export async function handleLogin(username, password) {
+  try {
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+      credentials: "include",
     })
-    .catch((error) => {
-      console.error("Error:", error)
-    })
-})
+
+    const data = await response.json()
+    if (response.ok && data.success) {
+      return { success: true, token: data.token, username: data.user.username }
+    } else {
+      return { success: false, message: data.message || "Something went wrong" }
+    }
+  } catch (error) {
+    console.error("Error:", error)
+    return { success: false, message: "An error occurred. Please try again." }
+  }
+}

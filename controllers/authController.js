@@ -56,8 +56,8 @@ async function logUserIn(req, res) {
 
     const payload = { userId: user.id }
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" })
-
-    res.json({ success: true, token: `Bearer ${token}` })
+    console.log(user.username)
+    res.json({ success: true, token: `Bearer ${token}`, user })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Server error" })
