@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { sendFriendRequest } from "../public/js/sendFriendRequest"
+import { getProfileData } from "../public/js/requestStatus"
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null)
@@ -8,16 +9,29 @@ export default function ProfilePage() {
   const [searchInput, setSearchInput] = useState("")
   const [message, setMessage] = useState("")
   const [requestsOpen, setRequestsOpen] = useState(false)
+  const [friendRequests, setFriendRequests] = useState([])
+  const [friends, setFriends] = useState([])
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user")
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser))
-      } catch (error) {
-        console.error("Error parsing user data from localStorage:", error)
+    const fetchProfileData = async () => {
+      const token = localStorage.getItem("token")
+
+      if (token) {
+        const result = await getProfileData(token)
+        if (result.success) {
+          setUser(result.profileData.user)
+          setFriendRequests(result.profileData.friendRequests)
+          setFriends(result.profileData.friends)
+        } else {
+          console.error("Failed to fetch profile data:", result.message)
+          setMessage(result.message)
+        }
+      } else {
+        setMessage("User is not authenticated.")
       }
     }
+
+    fetchProfileData()
   }, [])
 
   useEffect(() => {
@@ -29,7 +43,7 @@ export default function ProfilePage() {
   }, [searchOpen])
 
   if (!user) {
-    return <p>Loading...</p>
+    return <p>{message || "Loading..."}</p>
   }
 
   const toggleMenu = () => {
@@ -63,6 +77,14 @@ export default function ProfilePage() {
     }
   }
 
+  const handleAcceptRequest = async (requestId) => {
+    console.log(`Accept request with ID: ${requestId}`)
+  }
+
+  const handleDeclineRequest = async (requestId) => {
+    console.log(`Decline request with ID: ${requestId}`)
+  }
+
   return (
     <div className="profile-page">
       <div className="profile-container left">
@@ -77,7 +99,7 @@ export default function ProfilePage() {
           </div>
         )}
         <div className="profile-picture"></div>
-        <h2>{user}</h2>
+        <h2>{user.username}</h2>
       </div>
       <div className="profile-container right">
         <h1>Additional Info</h1>
@@ -106,7 +128,21 @@ export default function ProfilePage() {
           </button>
           {requestsOpen && (
             <div className="requests-dropdown">
-              <p>No friend requests</p>
+              {friendRequests.length > 0 ? (
+                friendRequests.map((request, index) => (
+                  <div key={index} className="request-item">
+                    <p>{request.username}</p>
+                    <button onClick={() => handleAcceptRequest(request.id)}>
+                      Accept
+                    </button>
+                    <button onClick={() => handleDeclineRequest(request.id)}>
+                      Decline
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>No friend requests</p>
+              )}
             </div>
           )}
         </div>

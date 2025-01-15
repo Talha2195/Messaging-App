@@ -15,7 +15,6 @@ export default function Login() {
       setSuccess("Login successful! Redirecting...")
       setError(null)
       localStorage.setItem("token", result.token)
-      localStorage.setItem("user", JSON.stringify(result.username))
       window.location.href = `/profilePage?token=${encodeURIComponent(
         result.token
       )}`

@@ -56,7 +56,6 @@ async function logUserIn(req, res) {
 
     const payload = { userId: user.id }
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" })
-    console.log(user.username)
     res.json({ success: true, token: `Bearer ${token}`, user })
   } catch (error) {
     console.error(error)
@@ -71,7 +70,6 @@ async function sendFriendRequest(req, res) {
   const senderId = req.user.id
 
   try {
-    console.log(username)
     const receiver = await db.findUser(username)
 
     if (!receiver) {
@@ -98,11 +96,11 @@ async function sendFriendRequest(req, res) {
   }
 }
 
-async function getFriendRequests(req, res) {
+async function getProfile(req, res) {
   const userId = req.user.id
 
   try {
-    const requests = await db.getFriendRequests(userId)
+    const requests = await db.getProfile(userId)
 
     return res.status(200).json({
       success: true,
@@ -112,7 +110,7 @@ async function getFriendRequests(req, res) {
     console.error(error)
     return res.status(500).json({
       success: false,
-      message: `Error fetching friend requests: ${error.message}`,
+      message: `Error fetching profile data: ${error.message}`,
     })
   }
 }
@@ -157,7 +155,7 @@ module.exports = {
   signUpUser,
   logUserIn,
   sendFriendRequest,
-  getFriendRequests,
+  getProfile,
   acceptFriendRequest,
   rejectFriendRequest,
 }

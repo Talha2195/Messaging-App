@@ -7,10 +7,6 @@ const { authMiddleware } = require("../passportConfig")
 getRouter.get("/", getControllers.renderMainPage)
 getRouter.get("/signUp", getControllers.renderSignUpPage)
 getRouter.get("/profile", authMiddleware, getControllers.renderProfilePage)
-getRouter.get(
-  "/friendRequests",
-  authMiddleware,
-  authController.getFriendRequests
-)
+getRouter.get("/profileData", authMiddleware, authController.getProfile)
 
 module.exports = getRouter

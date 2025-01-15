@@ -203,7 +203,7 @@ body {
 
 .requests-dropdown {
   position: absolute;
-  top: 100px;
+  top: 90px;
   right: 0;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -211,8 +211,40 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding: 10px;
-  width: 200px;
+  width: 300px;
   text-align: center;
+}
+
+.request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.request-item:last-child {
+  border-bottom: none;
+}
+
+.request-item p {
+  margin: 0;
+  flex: 1;
+}
+
+.request-item button {
+  margin-left: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.request-item button:hover {
+  background-color: #0056b3;
 }
 
 .message {

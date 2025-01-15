@@ -127,6 +127,11 @@ async function getProfile(userId) {
       },
     })
 
+    if (!user) {
+      console.error("User not found with id:", userId)
+      throw new Error("User not found")
+    }
+
     const friends = user.friends.map((friendship) => friendship.friend)
     const friendRequests = user.receivedRequests.map((request) => ({
       id: request.id,
