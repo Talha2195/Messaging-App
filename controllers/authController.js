@@ -116,10 +116,10 @@ async function getProfile(req, res) {
 }
 
 async function acceptFriendRequest(req, res) {
-  const { id } = req.body
-
+  const { requestId } = req.body
+  console.log(requestId)
   try {
-    await db.acceptFriendRequest(id)
+    await db.acceptFriendRequest(requestId)
     return res.status(200).json({
       success: true,
       message: "Friend request accepted successfully",

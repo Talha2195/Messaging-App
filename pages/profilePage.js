@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { sendFriendRequest } from "../public/js/sendFriendRequest"
 import { getProfileData } from "../public/js/requestStatus"
+import { acceptReq } from "../public/js/acceptReq"
+import { rejectReq } from "../public/js/rejectReq"
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null)
@@ -11,6 +13,8 @@ export default function ProfilePage() {
   const [requestsOpen, setRequestsOpen] = useState(false)
   const [friendRequests, setFriendRequests] = useState([])
   const [friends, setFriends] = useState([])
+  const [selectedContact, setSelectedContact] = useState(null)
+  const [chatInput, setChatInput] = useState("")
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -42,14 +46,6 @@ export default function ProfilePage() {
     }
   }, [searchOpen])
 
-  if (!user) {
-    return <p>{message || "Loading..."}</p>
-  }
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-  }
-
   const toggleSearch = () => {
     setSearchOpen(!searchOpen)
   }
@@ -78,17 +74,72 @@ export default function ProfilePage() {
   }
 
   const handleAcceptRequest = async (requestId) => {
-    console.log(`Accept request with ID: ${requestId}`)
+    const token = localStorage.getItem("token")
+    if (token) {
+      const result = await acceptReq(token, requestId)
+      if (result.success) {
+        setMessage("Friend request accepted successfully!")
+        setFriendRequests(
+          friendRequests.filter((request) => request.id !== requestId)
+        )
+      } else {
+        setMessage(result.message || "Failed to accept friend request.")
+      }
+    } else {
+      setMessage("User is not authenticated.")
+    }
   }
 
   const handleDeclineRequest = async (requestId) => {
-    console.log(`Decline request with ID: ${requestId}`)
+    const token = localStorage.getItem("token")
+    if (token) {
+      const result = await rejectReq(token, requestId)
+      if (result.success) {
+        setMessage("Friend request declined successfully!")
+        setFriendRequests(
+          friendRequests.filter((request) => request.id !== requestId)
+        )
+      } else {
+        setMessage(result.message || "Failed to decline friend request.")
+      }
+    } else {
+      setMessage("User is not authenticated.")
+    }
   }
+
+  const handleContactClick = (friend) => {
+    setSelectedContact(friend)
+  }
+
+  const handleChatInputChange = (event) => {
+    setChatInput(event.target.value)
+  }
+
+  const handleSendChat = () => {
+    if (selectedContact) {
+      console.log(
+        `Sending message to ${selectedContact.username}: ${chatInput}`
+      )
+      setChatInput("")
+    } else {
+      console.error("No contact selected")
+    }
+  }
+
+  useEffect(() => {
+    const requestsDropdown = document.querySelector(".requests-dropdown")
+    if (requestsDropdown) {
+      const baseHeight = 100
+      const itemHeight = 50
+      const newHeight = baseHeight + friendRequests.length * itemHeight
+      requestsDropdown.style.height = `${newHeight}px`
+    }
+  }, [friendRequests])
 
   return (
     <div className="profile-page">
       <div className="profile-container left">
-        <div className="menu-icon" onClick={toggleMenu}>
+        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
           <img src="/images/menuIcon.svg" alt="Menu Icon" />
         </div>
         {menuOpen && (
@@ -99,33 +150,51 @@ export default function ProfilePage() {
           </div>
         )}
         <div className="profile-picture"></div>
-        <h2>{user.username}</h2>
+        {user && <h2>{user.username}</h2>}
+        <hr className="separator" />
+        <div className="contacts">
+          {friends.length > 0 ? (
+            friends.map((friend, index) => (
+              <div key={index} className="contact-item">
+                <button onClick={() => handleContactClick(friend)}>
+                  {friend.username}
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>No contacts</p>
+          )}
+        </div>
       </div>
       <div className="profile-container right">
-        <h1>Additional Info</h1>
-        <p>Here you can add additional information or widgets.</p>
-        <div className="search-container">
-          <button className="search-button" onClick={toggleSearch}>
-            +
-          </button>
-          <form
-            onSubmit={handleSearchSubmit}
-            className={`search-form ${searchOpen ? "open" : ""}`}
-          >
-            <button type="submit" className="submit-button">
-              Submit
+        <div className="top-bar">
+          <div className="search-container">
+            <button className="search-button" onClick={toggleSearch}>
+              +
             </button>
-            <input
-              type="text"
-              className="search-bar"
-              placeholder="Search..."
-              value={searchInput}
-              onChange={handleSearchChange}
-            />
-          </form>
-          <button className="requests-button" onClick={toggleRequests}>
-            <img src="/images/addPerson.svg" alt="Add Person" />
-          </button>
+            <button className="requests-button" onClick={toggleRequests}>
+              <img src="/images/addPerson.svg" alt="Add Person" />
+            </button>
+          </div>
+          {selectedContact && (
+            <div className="contact-name">
+              <h3>{selectedContact.username}</h3>
+            </div>
+          )}
+          {searchOpen && (
+            <form className="search-form open" onSubmit={handleSearchSubmit}>
+              <input
+                type="text"
+                className="search-bar"
+                value={searchInput}
+                onChange={handleSearchChange}
+                placeholder="Search..."
+              />
+              <button type="submit" className="submit-button">
+                Search
+              </button>
+            </form>
+          )}
           {requestsOpen && (
             <div className="requests-dropdown">
               {friendRequests.length > 0 ? (
@@ -141,11 +210,30 @@ export default function ProfilePage() {
                   </div>
                 ))
               ) : (
-                <p>No friend requests</p>
+                <p className="no-requests-message">No friend requests</p>
               )}
             </div>
           )}
         </div>
+        {selectedContact && (
+          <div className="chat-container">
+            <div className="chat-messages">
+              {/* Placeholder for chat messages */}
+            </div>
+            <div className="chat-box">
+              <input
+                type="text"
+                className="chat-input"
+                placeholder="Type a message..."
+                value={chatInput}
+                onChange={handleChatInputChange}
+              />
+              <button className="send-button" onClick={handleSendChat}>
+                Send
+              </button>
+            </div>
+          </div>
+        )}
         {message && <p className="message">{message}</p>}
       </div>
     </div>
