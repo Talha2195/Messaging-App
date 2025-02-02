@@ -151,6 +151,28 @@ async function rejectFriendRequest(req, res) {
   }
 }
 
+async function sendMessageToUser(req, res) {
+  const { recipient, message } = req.body
+  const senderId = req.user.id
+  console.log(recipient, message)
+
+  try {
+    const newMessage = await db.sendMessage(senderId, recipient, message)
+
+    return res.status(201).json({
+      success: true,
+      message: "Message sent successfully",
+      newMessage,
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: `Error sending message: ${error.message}`,
+    })
+  }
+}
+
 module.exports = {
   signUpUser,
   logUserIn,
@@ -158,4 +180,5 @@ module.exports = {
   getProfile,
   acceptFriendRequest,
   rejectFriendRequest,
+  sendMessageToUser,
 }

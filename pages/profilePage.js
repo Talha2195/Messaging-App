@@ -3,6 +3,7 @@ import { sendFriendRequest } from "../public/js/sendFriendRequest"
 import { getProfileData } from "../public/js/requestStatus"
 import { acceptReq } from "../public/js/acceptReq"
 import { rejectReq } from "../public/js/rejectReq"
+import { sendMessage } from "../public/js/sendMessage"
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null)
@@ -115,14 +116,17 @@ export default function ProfilePage() {
     setChatInput(event.target.value)
   }
 
-  const handleSendChat = () => {
-    if (selectedContact) {
-      console.log(
-        `Sending message to ${selectedContact.username}: ${chatInput}`
-      )
-      setChatInput("")
+  const handleSendChat = async () => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      const result = await sendMessage(token, selectedContact.id, chatInput)
+      if (result.success) {
+        console.log("message sent!")
+      } else {
+        console.error("Failed to send message:", result.message)
+      }
     } else {
-      console.error("No contact selected")
+      console.error("User is not authenticated.")
     }
   }
 
@@ -195,18 +199,27 @@ export default function ProfilePage() {
               </button>
             </form>
           )}
+
           {requestsOpen && (
             <div className="requests-dropdown">
               {friendRequests.length > 0 ? (
                 friendRequests.map((request, index) => (
                   <div key={index} className="request-item">
-                    <p>{request.username}</p>
-                    <button onClick={() => handleAcceptRequest(request.id)}>
-                      Accept
-                    </button>
-                    <button onClick={() => handleDeclineRequest(request.id)}>
-                      Decline
-                    </button>
+                    <p className="request-name">{request.username}</p>
+                    <div className="request-buttons">
+                      <button
+                        className="accept-button"
+                        onClick={() => handleAcceptRequest(request.id)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="decline-button"
+                        onClick={() => handleDeclineRequest(request.id)}
+                      >
+                        Decline
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (

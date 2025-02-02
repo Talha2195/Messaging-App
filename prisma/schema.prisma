@@ -14,7 +14,8 @@ model User {
   name              String?
   bio               String?
   picture           String?         
-  messages          Messages[]      
+  sentMessages      Messages[]         @relation("SentMessages")
+  receivedMessages  Messages[]         @relation("ReceivedMessages")
   sentRequests      FriendRequest[]    @relation("SentRequests") 
   receivedRequests  FriendRequest[]    @relation("ReceivedRequests") 
   friends           Friendship[]       @relation("UserFriends")
@@ -22,11 +23,13 @@ model User {
 }
 
 model Messages {
-  id        Int      @id @default(autoincrement())
-  message   String
-  createdAt DateTime @default(now())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id]) 
+  id          Int      @id @default(autoincrement())
+  message     String
+  createdAt   DateTime @default(now())
+  senderId    Int
+  receiverId  Int
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
 
 model FriendRequest {

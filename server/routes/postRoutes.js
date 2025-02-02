@@ -18,4 +18,10 @@ postRouter.post(
   postControllers.rejectFriendRequest
 )
 
+postRouter.post(
+  "/sendMessage",
+  authMiddleware,
+  postControllers.sendMessageToUser
+)
+
 module.exports = postRouter

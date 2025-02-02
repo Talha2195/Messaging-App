@@ -127,7 +127,7 @@ body {
   flex-direction: row;
   z-index: 1200;
   position: relative;
-  left: -50px;
+  left: 900px;
 }
 
 .search-button,
@@ -151,8 +151,8 @@ body {
   display: flex;
   align-items: center;
   position: absolute;
-  top: 10px;
-  left: -220px;
+  top: 15px;
+  left: 670px;
   z-index: 1200;
 }
 
@@ -190,13 +190,11 @@ body {
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1200;
-  height: 100px;
   width: 300px;
-  text-align: center;
+  height: 150px;
+  text-align: left;
   overflow-y: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 10px;
 }
 
 .no-requests-message {
@@ -206,9 +204,41 @@ body {
 
 .request-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 10px;
+  width: 100%;
+}
+
+.request-name {
+  font-weight: bold;
+  margin-left: 200px;
+}
+
+.request-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+  padding-right: 200px;
+}
+
+.accept-button,
+.decline-button {
+  height: 35px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.accept-button:hover,
+.decline-button:hover {
+  background-color: #0056b3;
 }
 
 .request-item:last-child {
@@ -288,7 +318,7 @@ body {
 
 .top-bar::after {
   content: "";
-  width: 98.2%;
+  width: 96.5%;
   height: 2px;
   background-color: #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

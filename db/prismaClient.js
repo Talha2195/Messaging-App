@@ -194,6 +194,23 @@ async function rejectFriendRequest(requestId) {
   }
 }
 
+async function sendMessage(senderId, receiverId, message) {
+  try {
+    const newMessage = await prisma.messages.create({
+      data: {
+        senderId: senderId,
+        receiverId: receiverId,
+        message: message,
+      },
+    })
+
+    return newMessage
+  } catch (error) {
+    console.error("Error sending message:", error)
+    throw error
+  }
+}
+
 module.exports = {
   signUpUser,
   findUser,
@@ -202,4 +219,5 @@ module.exports = {
   getProfile,
   acceptFriendRequest,
   rejectFriendRequest,
+  sendMessage,
 }
