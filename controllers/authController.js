@@ -98,10 +98,8 @@ async function sendFriendRequest(req, res) {
 
 async function getProfile(req, res) {
   const userId = req.user.id
-
   try {
     const requests = await db.getProfile(userId)
-
     return res.status(200).json({
       success: true,
       requests,
@@ -117,7 +115,6 @@ async function getProfile(req, res) {
 
 async function acceptFriendRequest(req, res) {
   const { requestId } = req.body
-  console.log(requestId)
   try {
     await db.acceptFriendRequest(requestId)
     return res.status(200).json({
@@ -154,11 +151,8 @@ async function rejectFriendRequest(req, res) {
 async function sendMessageToUser(req, res) {
   const { recipient, message } = req.body
   const senderId = req.user.id
-  console.log(recipient, message)
-
   try {
     const newMessage = await db.sendMessage(senderId, recipient, message)
-
     return res.status(201).json({
       success: true,
       message: "Message sent successfully",
@@ -173,6 +167,23 @@ async function sendMessageToUser(req, res) {
   }
 }
 
+async function getUserMessages(req, res) {
+  const userId = req.user.id
+  try {
+    const messages = await db.getMessages(userId)
+    return res.status(200).json({
+      success: true,
+      messages,
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching messages: ${error.message}`,
+    })
+  }
+}
+
 module.exports = {
   signUpUser,
   logUserIn,
@@ -181,4 +192,5 @@ module.exports = {
   acceptFriendRequest,
   rejectFriendRequest,
   sendMessageToUser,
+  getUserMessages,
 }

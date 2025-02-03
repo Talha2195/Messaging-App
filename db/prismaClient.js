@@ -23,7 +23,6 @@ async function signUpUser(username, password) {
         password: hashedPassword,
       },
     })
-    console.log("Created User:", newUser)
     return newUser
   } catch (error) {
     console.error("Error creating user:", error)
@@ -211,6 +210,38 @@ async function sendMessage(senderId, receiverId, message) {
   }
 }
 
+async function getMessages(userId) {
+  try {
+    const sentMessages = await prisma.messages.findMany({
+      where: {
+        senderId: userId,
+      },
+      include: {
+        sender: true,
+        receiver: true,
+      },
+    })
+
+    const receivedMessages = await prisma.messages.findMany({
+      where: {
+        receiverId: userId,
+      },
+      include: {
+        sender: true,
+        receiver: true,
+      },
+    })
+
+    return {
+      sent: sentMessages,
+      received: receivedMessages,
+    }
+  } catch (error) {
+    console.error("Error fetching messages:", error)
+    throw error
+  }
+}
+
 module.exports = {
   signUpUser,
   findUser,
@@ -220,4 +251,5 @@ module.exports = {
   acceptFriendRequest,
   rejectFriendRequest,
   sendMessage,
+  getMessages,
 }

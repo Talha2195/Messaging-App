@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react"
+import axios from "axios"
 import { sendFriendRequest } from "../public/js/sendFriendRequest"
 import { getProfileData } from "../public/js/requestStatus"
 import { acceptReq } from "../public/js/acceptReq"
 import { rejectReq } from "../public/js/rejectReq"
 import { sendMessage } from "../public/js/sendMessage"
+import { getMessages } from "../public/js/getMessages"
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null)
@@ -16,6 +18,8 @@ export default function ProfilePage() {
   const [friends, setFriends] = useState([])
   const [selectedContact, setSelectedContact] = useState(null)
   const [chatInput, setChatInput] = useState("")
+  const [sentMessages, setSentMessages] = useState([])
+  const [receivedMessages, setReceivedMessages] = useState([])
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -108,25 +112,48 @@ export default function ProfilePage() {
     }
   }
 
-  const handleContactClick = (friend) => {
+  const handleContactClick = async (friend) => {
     setSelectedContact(friend)
+    try {
+      const token = localStorage.getItem("token")
+      if (token) {
+        const result = await getMessages(token)
+        if (result.success) {
+          setSentMessages(result.messages.sent)
+          setReceivedMessages(result.messages.received)
+        } else {
+          console.error("Failed to fetch messages:", result.message)
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error)
+    }
   }
 
   const handleChatInputChange = (event) => {
     setChatInput(event.target.value)
+    console.log(event.target.value)
   }
 
   const handleSendChat = async () => {
     const token = localStorage.getItem("token")
-    if (token) {
-      const result = await sendMessage(token, selectedContact.id, chatInput)
+    if (token && selectedContact && chatInput.trim() !== "") {
+      console.log(chatInput)
+      const result = await sendMessage(
+        token,
+        user.id,
+        selectedContact.id,
+        chatInput
+      )
       if (result.success) {
         console.log("message sent!")
+        setSentMessages([...sentMessages, result.message])
+        setChatInput("")
       } else {
         console.error("Failed to send message:", result.message)
       }
     } else {
-      console.error("User is not authenticated.")
+      console.error("User is not authenticated or message is empty.")
     }
   }
 

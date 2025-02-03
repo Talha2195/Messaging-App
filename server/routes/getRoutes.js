@@ -8,5 +8,6 @@ getRouter.get("/", getControllers.renderMainPage)
 getRouter.get("/signUp", getControllers.renderSignUpPage)
 getRouter.get("/profile", authMiddleware, getControllers.renderProfilePage)
 getRouter.get("/profileData", authMiddleware, authController.getProfile)
+getRouter.get("/getMessages", authMiddleware, authController.getUserMessages)
 
 module.exports = getRouter
