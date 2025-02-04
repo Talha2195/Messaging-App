@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import axios from "axios"
 import { sendFriendRequest } from "../public/js/sendFriendRequest"
 import { getProfileData } from "../public/js/requestStatus"
 import { acceptReq } from "../public/js/acceptReq"
@@ -132,7 +131,6 @@ export default function ProfilePage() {
 
   const handleChatInputChange = (event) => {
     setChatInput(event.target.value)
-    console.log(event.target.value)
   }
 
   const handleSendChat = async () => {
@@ -147,7 +145,7 @@ export default function ProfilePage() {
       )
       if (result.success) {
         console.log("message sent!")
-        setSentMessages([...sentMessages, result.message])
+        setSentMessages([...sentMessages, result.newMessage])
         setChatInput("")
       } else {
         console.error("Failed to send message:", result.message)
@@ -166,6 +164,13 @@ export default function ProfilePage() {
       requestsDropdown.style.height = `${newHeight}px`
     }
   }, [friendRequests])
+
+  const filteredSentMessages = sentMessages.filter(
+    (msg) => msg.receiverId === selectedContact?.id && msg.senderId === user?.id
+  )
+  const filteredReceivedMessages = receivedMessages.filter(
+    (msg) => msg.senderId === selectedContact?.id && msg.receiverId === user?.id
+  )
 
   return (
     <div className="profile-page">
@@ -258,7 +263,19 @@ export default function ProfilePage() {
         {selectedContact && (
           <div className="chat-container">
             <div className="chat-messages">
-              {/* Placeholder for chat messages */}
+              {filteredSentMessages
+                .concat(filteredReceivedMessages)
+                .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                .map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`message ${
+                      msg.senderId === user.id ? "sent" : "received"
+                    }`}
+                  >
+                    {msg.message}
+                  </div>
+                ))}
             </div>
             <div className="chat-box">
               <input

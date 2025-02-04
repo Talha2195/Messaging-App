@@ -5,7 +5,6 @@ export async function getMessages(token) {
     )
     const data = await response.json()
     if (response.ok && data.success) {
-      console.log("Messages retrieved!")
       return { success: true, messages: data.messages }
     } else {
       return { success: false, message: data.message || "Something went wrong" }

@@ -349,6 +349,28 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  max-width: 60%;
+}
+
+.message.sent {
+  background-color: #007bff;
+  color: white;
+  align-self: flex-end;
+}
+
+.message.received {
+  background-color: #f1f1f1;
+  color: black;
+  align-self: flex-start;
 }
 
 .chat-box {

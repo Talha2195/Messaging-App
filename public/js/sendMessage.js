@@ -1,4 +1,4 @@
-export async function sendMessage(token, recipient, sender, message) {
+export async function sendMessage(token, senderId, receiverId, message) {
   try {
     const response = await fetch(
       `http://localhost:3000/sendMessage?token=${encodeURIComponent(token)}`,
@@ -7,13 +7,13 @@ export async function sendMessage(token, recipient, sender, message) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ recipient, sender, message }),
+        body: JSON.stringify({ senderId, receiverId, message }),
         credentials: "include",
       }
     )
     const data = await response.json()
     if (response.ok && data.success) {
-      return { success: true }
+      return { success: true, newMessage: data.newMessage }
     } else {
       return { success: false, message: data.message || "Something went wrong" }
     }

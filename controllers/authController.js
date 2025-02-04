@@ -149,10 +149,10 @@ async function rejectFriendRequest(req, res) {
 }
 
 async function sendMessageToUser(req, res) {
-  const { recipient, message } = req.body
-  const senderId = req.user.id
+  const { senderId, receiverId, message } = req.body
+  console.log(senderId, receiverId, message)
   try {
-    const newMessage = await db.sendMessage(senderId, recipient, message)
+    const newMessage = await db.sendMessage(senderId, receiverId, message)
     return res.status(201).json({
       success: true,
       message: "Message sent successfully",
