@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient()
 const bcrypt = require("bcryptjs")
 
-async function signUpUser(username, password) {
+async function signUpUser(username, password, name) {
   try {
     const saltRounds = 10
 
@@ -21,6 +21,7 @@ async function signUpUser(username, password) {
       data: {
         username: username,
         password: hashedPassword,
+        name: name,
       },
     })
     return newUser
@@ -242,6 +243,25 @@ async function getMessages(userId) {
   }
 }
 
+async function updateUserDetails(userId, name, bio, profilePicture) {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: name,
+        bio: bio,
+        profilePicture: profilePicture,
+      },
+    })
+    return updatedUser
+  } catch (error) {
+    console.error("Error updating user details:", error)
+    throw error
+  }
+}
+
 module.exports = {
   signUpUser,
   findUser,
@@ -252,4 +272,5 @@ module.exports = {
   rejectFriendRequest,
   sendMessage,
   getMessages,
+  updateUserDetails,
 }

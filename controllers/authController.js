@@ -15,10 +15,11 @@ async function signUpUser(req, res) {
     })
   }
 
-  const { username, password } = req.body
+  const { username, password, name } = req.body
+  console.log(username, password, name)
 
   try {
-    const newUser = await db.signUpUser(username, password)
+    const newUser = await db.signUpUser(username, password, name)
 
     if (newUser) {
       return res.status(201).json({
@@ -180,6 +181,25 @@ async function getUserMessages(req, res) {
     return res.status(500).json({
       success: false,
       message: `Error fetching messages: ${error.message}`,
+    })
+  }
+}
+
+async function editProfile(req, res) {
+  const userId = req.user.id
+  const { username, password } = req.body
+  try {
+    const updatedUser = await db.editProfile(userId, username, password)
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      updatedUser,
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: `Error updating profile: ${error.message}`,
     })
   }
 }

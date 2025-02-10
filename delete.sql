@@ -1,1 +1,2 @@
-DELETE FROM "Messages" WHERE id = 3;
+DELETE FROM "User" WHERE id = 1;
+DELETE FROM "User" WHERE id = 2;

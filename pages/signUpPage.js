@@ -1,8 +1,8 @@
-import React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { handleSignUpFormSubmit } from "../public/js/signUp"
 
 export default function Signup() {
+  const [name, setName] = useState("")
   const [username, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -12,6 +12,7 @@ export default function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     const result = await handleSignUpFormSubmit(
+      name,
       username,
       password,
       confirmPassword
@@ -28,10 +29,21 @@ export default function Signup() {
       setSuccess(null)
     }
   }
+
   return (
     <div className="signup-container">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label htmlFor="username">Username:</label>
           <input

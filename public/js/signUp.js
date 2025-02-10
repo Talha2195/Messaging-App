@@ -1,4 +1,9 @@
-async function handleSignUpFormSubmit(username, password, confirmPassword) {
+async function handleSignUpFormSubmit(
+  name,
+  username,
+  password,
+  confirmPassword
+) {
   if (password !== confirmPassword) {
     return { success: false, message: "Passwords do not match!" }
   }
@@ -10,6 +15,7 @@ async function handleSignUpFormSubmit(username, password, confirmPassword) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        name: name,
         username: username,
         password: password,
         confirmPassword: confirmPassword,

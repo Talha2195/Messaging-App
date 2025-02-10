@@ -50,8 +50,33 @@ export default function ProfilePage() {
     }
   }, [searchOpen])
 
+  useEffect(() => {
+    const requestsDropdown = document.querySelector(".requests-dropdown")
+    if (requestsDropdown) {
+      const baseHeight = 100
+      const itemHeight = 50
+      const newHeight = baseHeight + friendRequests.length * itemHeight
+      requestsDropdown.style.height = `${newHeight}px`
+    }
+  }, [friendRequests])
+
+  const filteredSentMessages = sentMessages.filter(
+    (msg) => msg.receiverId === selectedContact?.id && msg.senderId === user?.id
+  )
+  const filteredReceivedMessages = receivedMessages.filter(
+    (msg) => msg.senderId === selectedContact?.id && msg.receiverId === user?.id
+  )
+
   const toggleSearch = () => {
     setSearchOpen(!searchOpen)
+  }
+
+  const handleLogout = () => {
+    window.location.href = "/loginPage"
+  }
+
+  const handleEdit = () => {
+    window.location.href = "/editProfile"
   }
 
   const toggleRequests = () => {
@@ -155,23 +180,6 @@ export default function ProfilePage() {
     }
   }
 
-  useEffect(() => {
-    const requestsDropdown = document.querySelector(".requests-dropdown")
-    if (requestsDropdown) {
-      const baseHeight = 100
-      const itemHeight = 50
-      const newHeight = baseHeight + friendRequests.length * itemHeight
-      requestsDropdown.style.height = `${newHeight}px`
-    }
-  }, [friendRequests])
-
-  const filteredSentMessages = sentMessages.filter(
-    (msg) => msg.receiverId === selectedContact?.id && msg.senderId === user?.id
-  )
-  const filteredReceivedMessages = receivedMessages.filter(
-    (msg) => msg.senderId === selectedContact?.id && msg.receiverId === user?.id
-  )
-
   return (
     <div className="profile-page">
       <div className="profile-container left">
@@ -181,19 +189,20 @@ export default function ProfilePage() {
         {menuOpen && (
           <div className="dropdown-menu">
             <ul>
-              <li>Logout</li>
+              <li onClick={handleLogout}>Logout</li>
+              <li onClick={handleEdit}>Edit</li>
             </ul>
           </div>
         )}
         <div className="profile-picture"></div>
-        {user && <h2>{user.username}</h2>}
+        {user && <h2>{user.name}</h2>}
         <hr className="separator" />
         <div className="contacts">
           {friends.length > 0 ? (
             friends.map((friend, index) => (
               <div key={index} className="contact-item">
                 <button onClick={() => handleContactClick(friend)}>
-                  {friend.username}
+                  {friend.name}
                 </button>
               </div>
             ))
@@ -214,7 +223,7 @@ export default function ProfilePage() {
           </div>
           {selectedContact && (
             <div className="contact-name">
-              <h3>{selectedContact.username}</h3>
+              <h3>{selectedContact.name}</h3>
             </div>
           )}
           {searchOpen && (
@@ -237,7 +246,7 @@ export default function ProfilePage() {
               {friendRequests.length > 0 ? (
                 friendRequests.map((request, index) => (
                   <div key={index} className="request-item">
-                    <p className="request-name">{request.username}</p>
+                    <p className="request-name">{request.name}</p>
                     <div className="request-buttons">
                       <button
                         className="accept-button"
