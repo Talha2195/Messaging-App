@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { getProfileData } from "../public/js/requestStatus"
 import { editProfilePage } from "../public/js/editProfile"
+import Loading from "./components/loading"
 
 export default function EditProfile() {
   const [name, setName] = useState("")
   const [bio, setBio] = useState("")
   const [picture, setProfilePicture] = useState(null)
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(true)
 
   const handleProfilePictureChange = (event) => {
     setProfilePicture(event.target.files[0])
@@ -28,6 +30,7 @@ export default function EditProfile() {
       } else {
         setMessage("User is not authenticated.")
       }
+      setLoading(false)
     }
 
     fetchProfileData()
@@ -55,6 +58,10 @@ export default function EditProfile() {
     } else {
       setMessage("User is not authenticated.")
     }
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (

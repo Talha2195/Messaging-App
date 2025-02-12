@@ -5,6 +5,7 @@ import { acceptReq } from "../public/js/acceptReq"
 import { rejectReq } from "../public/js/rejectReq"
 import { sendMessage } from "../public/js/sendMessage"
 import { getMessages } from "../public/js/getMessages"
+import Loading from "./components/loading"
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null)
@@ -19,6 +20,7 @@ export default function ProfilePage() {
   const [chatInput, setChatInput] = useState("")
   const [sentMessages, setSentMessages] = useState([])
   const [receivedMessages, setReceivedMessages] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -37,6 +39,7 @@ export default function ProfilePage() {
       } else {
         setMessage("User is not authenticated.")
       }
+      setLoading(false)
     }
 
     fetchProfileData()
@@ -184,6 +187,10 @@ export default function ProfilePage() {
     } else {
       console.error("User is not authenticated or message is empty.")
     }
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (
