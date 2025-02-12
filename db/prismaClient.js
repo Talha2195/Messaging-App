@@ -243,7 +243,7 @@ async function getMessages(userId) {
   }
 }
 
-async function updateUserDetails(userId, name, bio, profilePicture) {
+async function updateUserDetails(userId, name, bio, picture) {
   try {
     const updatedUser = await prisma.user.update({
       where: {
@@ -252,7 +252,7 @@ async function updateUserDetails(userId, name, bio, profilePicture) {
       data: {
         name: name,
         bio: bio,
-        profilePicture: profilePicture,
+        picture: picture,
       },
     })
     return updatedUser

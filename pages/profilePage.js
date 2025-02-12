@@ -73,10 +73,16 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     window.location.href = "/loginPage"
+    localStorage.removeItem("token")
   }
 
-  const handleEdit = () => {
-    window.location.href = "/editProfile"
+  const handleEdit = async () => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      window.location.href = `/editProfile?token=${encodeURIComponent(token)}`
+    } else {
+      setMessage(result.message || "Failed to fetch edit page.")
+    }
   }
 
   const toggleRequests = () => {

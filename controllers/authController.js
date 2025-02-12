@@ -187,9 +187,9 @@ async function getUserMessages(req, res) {
 
 async function editProfile(req, res) {
   const userId = req.user.id
-  const { username, password } = req.body
+  const { name, bio, picture } = req.body
   try {
-    const updatedUser = await db.editProfile(userId, username, password)
+    const updatedUser = await db.updateUserDetails(userId, name, bio, picture)
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
@@ -213,4 +213,5 @@ module.exports = {
   rejectFriendRequest,
   sendMessageToUser,
   getUserMessages,
+  editProfile,
 }

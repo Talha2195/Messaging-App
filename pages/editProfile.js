@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { getProfileData } from "../public/js/requestStatus"
+import { editProfilePage } from "../public/js/editProfile"
 
 export default function EditProfile() {
   const [name, setName] = useState("")
   const [bio, setBio] = useState("")
-  const [profilePicture, setProfilePicture] = useState(null)
+  const [picture, setProfilePicture] = useState(null)
+  const [message, setMessage] = useState("")
 
   const handleProfilePictureChange = (event) => {
     setProfilePicture(event.target.files[0])
@@ -31,11 +33,35 @@ export default function EditProfile() {
     fetchProfileData()
   }, [])
 
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const token = localStorage.getItem("token")
+
+    if (token) {
+      try {
+        const updatedUser = await editProfilePage(token, name, bio, picture)
+        if (updatedUser.success) {
+          setMessage("Profile updated successfully!")
+          setTimeout(() => {
+            window.location.href = `/profilePage?token=${encodeURIComponent(
+              token
+            )}`
+          }, 2000)
+        }
+      } catch (error) {
+        console.error("Error updating user:", error)
+        setMessage("Failed to update profile.")
+      }
+    } else {
+      setMessage("User is not authenticated.")
+    }
+  }
+
   return (
     <div className="edit-profile-page">
       <div className="edit-profile-container">
         <h1 className="edit-profile-title">Edit Profile</h1>
-        <form className="edit-profile-form">
+        <form className="edit-profile-form" onSubmit={handleSubmit}>
           <div className="form-group name-group">
             <label htmlFor="name" className="form-label">
               Name:
@@ -46,7 +72,6 @@ export default function EditProfile() {
               className="form-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
           </div>
           <div className="form-group bio-group">
@@ -58,7 +83,6 @@ export default function EditProfile() {
               className="form-textarea"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              required
             />
           </div>
           <div className="form-group profile-picture-group">
@@ -70,13 +94,13 @@ export default function EditProfile() {
               id="profilePicture"
               className="form-input"
               onChange={handleProfilePictureChange}
-              required
             />
           </div>
           <button type="submit" className="save-changes-button">
             Save Changes
           </button>
         </form>
+        {message && <p className="message">{message}</p>}
       </div>
     </div>
   )
