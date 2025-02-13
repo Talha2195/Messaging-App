@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { sendFriendRequest } from "../public/js/sendFriendRequest"
 import { getProfileData } from "../public/js/requestStatus"
 import { acceptReq } from "../public/js/acceptReq"
@@ -6,6 +6,7 @@ import { rejectReq } from "../public/js/rejectReq"
 import { sendMessage } from "../public/js/sendMessage"
 import { getMessages } from "../public/js/getMessages"
 import Loading from "./components/loading"
+import ChatLoading from "./components/chatLoading"
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null)
@@ -21,6 +22,9 @@ export default function ProfilePage() {
   const [sentMessages, setSentMessages] = useState([])
   const [receivedMessages, setReceivedMessages] = useState([])
   const [loading, setLoading] = useState(true)
+  const [loadingMessages, setLoadingMessages] = useState(true)
+  const [contactDropdown, setContactDropdown] = useState(null)
+  const dropdownRefs = useRef([])
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -62,6 +66,21 @@ export default function ProfilePage() {
       requestsDropdown.style.height = `${newHeight}px`
     }
   }, [friendRequests])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRefs.current.every((ref) => ref && !ref.contains(event.target))
+      ) {
+        setContactDropdown(null)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [dropdownRefs])
 
   const filteredSentMessages = sentMessages.filter(
     (msg) => msg.receiverId === selectedContact?.id && msg.senderId === user?.id
@@ -147,6 +166,7 @@ export default function ProfilePage() {
 
   const handleContactClick = async (friend) => {
     setSelectedContact(friend)
+    setLoadingMessages(true)
     try {
       const token = localStorage.getItem("token")
       if (token) {
@@ -161,6 +181,7 @@ export default function ProfilePage() {
     } catch (error) {
       console.error("Error fetching messages:", error)
     }
+    setLoadingMessages(false)
   }
 
   const handleChatInputChange = (event) => {
@@ -187,6 +208,10 @@ export default function ProfilePage() {
     } else {
       console.error("User is not authenticated or message is empty.")
     }
+  }
+
+  const toggleDropdown = (index) => {
+    setContactDropdown(contactDropdown === index ? null : index)
   }
 
   if (loading) {
@@ -217,6 +242,26 @@ export default function ProfilePage() {
                 <button onClick={() => handleContactClick(friend)}>
                   {friend.name}
                 </button>
+                <button
+                  className="dropdown-button"
+                  onClick={() => toggleDropdown(index)}
+                >
+                  <img
+                    src="/images/contactMenuIcon.svg"
+                    alt="Menu Icon"
+                    className="contact-menu-icon"
+                  />
+                </button>
+                {contactDropdown === index && (
+                  <div
+                    className="dropdown-menu"
+                    ref={(el) => (dropdownRefs.current[index] = el)}
+                  >
+                    <ul>
+                      <li>Profile</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             ))
           ) : (
@@ -284,21 +329,25 @@ export default function ProfilePage() {
         </div>
         {selectedContact && (
           <div className="chat-container">
-            <div className="chat-messages">
-              {filteredSentMessages
-                .concat(filteredReceivedMessages)
-                .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-                .map((msg, index) => (
-                  <div
-                    key={index}
-                    className={`message ${
-                      msg.senderId === user.id ? "sent" : "received"
-                    }`}
-                  >
-                    {msg.message}
-                  </div>
-                ))}
-            </div>
+            {loadingMessages ? (
+              <ChatLoading />
+            ) : (
+              <div className="chat-messages">
+                {filteredSentMessages
+                  .concat(filteredReceivedMessages)
+                  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                  .map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`message ${
+                        msg.senderId === user.id ? "sent" : "received"
+                      }`}
+                    >
+                      {msg.message}
+                    </div>
+                  ))}
+              </div>
+            )}
             <div className="chat-box">
               <input
                 type="text"

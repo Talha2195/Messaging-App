@@ -60,12 +60,19 @@ export default function EditProfile() {
     }
   }
 
+  const handleBack = () => {
+    window.history.back()
+  }
+
   if (loading) {
     return <Loading />
   }
 
   return (
     <div className="edit-profile-page">
+      <button className="back-button" onClick={handleBack}>
+        Back
+      </button>
       <div className="edit-profile-container">
         <h1 className="edit-profile-title">Edit Profile</h1>
         <form className="edit-profile-form" onSubmit={handleSubmit}>

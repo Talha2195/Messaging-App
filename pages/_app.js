@@ -4,6 +4,7 @@ import "../public/css/loginPage.css"
 import "../public/css/profilePage.css"
 import "../public/css/editProfile.css"
 import "../public/css/loading.css"
+import "../public/css/chatLoading.css"
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
