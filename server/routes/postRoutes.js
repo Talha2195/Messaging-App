@@ -24,6 +24,12 @@ postRouter.post(
   postControllers.sendMessageToUser
 )
 
+postRouter.post(
+  "/contactPageDetails",
+  authMiddleware,
+  postControllers.getContactProfileDetails
+)
+
 postRouter.post("/editProfile", authMiddleware, postControllers.editProfile)
 
 module.exports = postRouter

@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator")
 const db = require("../db/prismaClient")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const { request } = require("express")
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
 
@@ -204,6 +205,24 @@ async function editProfile(req, res) {
   }
 }
 
+async function getContactProfileDetails(req, res) {
+  const { userId } = req.body
+
+  try {
+    const contactProfileDetails = await db.findUserById(userId)
+    return res.status(200).json({
+      success: true,
+      contactProfileDetails,
+    })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching contact profile details: ${error.message}`,
+    })
+  }
+}
+
 module.exports = {
   signUpUser,
   logUserIn,
@@ -214,4 +233,5 @@ module.exports = {
   sendMessageToUser,
   getUserMessages,
   editProfile,
+  getContactProfileDetails,
 }

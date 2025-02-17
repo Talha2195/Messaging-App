@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react"
+import { useRouter } from "next/router"
 import { sendFriendRequest } from "../public/js/sendFriendRequest"
 import { getProfileData } from "../public/js/requestStatus"
 import { acceptReq } from "../public/js/acceptReq"
@@ -25,6 +26,7 @@ export default function ProfilePage() {
   const [loadingMessages, setLoadingMessages] = useState(true)
   const [contactDropdown, setContactDropdown] = useState(null)
   const dropdownRefs = useRef([])
+  const router = useRouter()
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -214,6 +216,13 @@ export default function ProfilePage() {
     setContactDropdown(contactDropdown === index ? null : index)
   }
 
+  const handleProfileClick = (friend) => {
+    router.push({
+      pathname: "/contactPage",
+      query: { friendId: friend.id },
+    })
+  }
+
   if (loading) {
     return <Loading />
   }
@@ -258,7 +267,9 @@ export default function ProfilePage() {
                     ref={(el) => (dropdownRefs.current[index] = el)}
                   >
                     <ul>
-                      <li>Profile</li>
+                      <li onClick={() => handleProfileClick(friend)}>
+                        Profile
+                      </li>
                     </ul>
                   </div>
                 )}

@@ -5,6 +5,7 @@ import "../public/css/profilePage.css"
 import "../public/css/editProfile.css"
 import "../public/css/loading.css"
 import "../public/css/chatLoading.css"
+import "../public/css/contactPage.css"
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />

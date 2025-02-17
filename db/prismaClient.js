@@ -53,17 +53,12 @@ async function findUser(username) {
 
 async function findUserById(id) {
   try {
+    const userId = parseInt(id, 10)
     const user = await prisma.user.findUnique({
       where: {
-        id: id,
+        id: userId,
       },
     })
-
-    if (!user) {
-      console.error("User not found with id:", id)
-      throw new Error("User not found")
-    }
-
     return user
   } catch (error) {
     console.error("Error finding user by ID:", error)
